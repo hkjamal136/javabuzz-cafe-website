@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>The Coffee Crate | Artisanal Roasters</title>
+    <meta name="description"
+        content="The Coffee Crate offers the finest roasted beans and a cozy atmosphere. Order your favorite brew online today.">
+    <meta name="keywords" content="The Coffee Crate, artisanal coffee, online coffee shop, fresh beans">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Oswald:wght@500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        :root {
+            --dark-bg: #121212;
+            --gold-accent: #d4af37;
+            --light-text: #e0e0e0;
+            --card-bg: #1e1e1e;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: var(--light-text);
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10%;
+            background: rgba(0, 0, 0, 0.95);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--gold-accent);
+        }
+
+        .logo {
+            font-family: 'Oswald', sans-serif;
+            font-size: 28px;
+            color: var(--gold-accent);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold-accent);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=1200');
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .hero h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 60px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .order-btn {
+            background: var(--gold-accent);
+            color: #000;
+            padding: 12px 35px;
+            border: none;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+        }
+
+        /* Menu Section */
+        .section {
+            padding: 80px 10%;
+        }
+
+        .title {
+            font-family: 'Oswald', sans-serif;
+            font-size: 32px;
+            color: var(--gold-accent);
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+        }
+
+        .menu-item {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            text-align: center;
+            padding-bottom: 20px;
+            transition: 0.3s;
+            border: 1px solid #333;
+        }
+
+        .menu-item:hover {
+            border-color: var(--gold-accent);
+        }
+
+        .menu-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+
+        .menu-item h3 {
+            margin: 15px 0;
+            font-size: 20px;
+        }
+
+        .price {
+            color: var(--gold-accent);
+            font-weight: bold;
+            font-size: 18px;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        /* Blog Section */
+        #blog-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .blog-box {
+            background: #1a1a1a;
+            padding: 20px;
+            border-radius: 5px;
+            border-bottom: 3px solid var(--gold-accent);
+        }
+
+        /* Map Section */
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 8px;
+        }
+
+        footer {
+            background: #0a0a0a;
+            padding: 40px 10%;
+            text-align: center;
+            border-top: 1px solid #222;
+            font-size: 13px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav>
+        <a href="#" class="logo">THE COFFEE CRATE</a>
+        <ul class="nav-links">
+            <li><a href="#home">Home</a></li>
+            <li><a href="#menu">Menu</a></li>
+            <li><a href="#blog">Journal</a></li>
+            <li><a href="#location">Find Us</a></li>
+        </ul>
+    </nav>
+
+    <section class="hero" id="home">
+        <h1>BORN TO BREW</h1>
+        <p style="margin-bottom: 25px;">Premium Coffee Experience for the Modern Soul.</p>
+        <button class="order-btn" onclick="document.getElementById('menu').scrollIntoView()">Order Now</button>
+    </section>
+
+    <section class="section" id="menu">
+        <h2 class="title">Our Signature Menu</h2>
+        <div class="menu-grid">
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1512568400610-62da28bc8a13?w=400">
+                <h3>Crate Caramel Macchiato</h3>
+                <span class="price">$6.50</span>
+                <button class="order-btn" onclick="orderAlert('Caramel Macchiato')">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=400">
+                <h3>Midnight Espresso</h3>
+                <span class="price">$4.00</span>
+                <button class="order-btn" onclick="orderAlert('Midnight Espresso')">Add to Cart</button>
+            </div>
+            <div class="menu-item">
+                <img src="https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=400">
+                <h3>Vanilla Bean Latte</h3>
+                <span class="price">$5.25</span>
+                <button class="order-btn" onclick="orderAlert('Vanilla Bean Latte')">Add to Cart</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="blog" style="background: #080808;">
+        <h2 class="title">The Coffee Journal</h2>
+        <div id="blog-container"></div>
+    </section>
+
+    <section class="section" id="location">
+        <h2 class="title">Our Roastery</h2>
+        <p><i class="fas fa-map-pin"></i> 456 Roast Avenue, Bean District. | <i class="fas fa-car"></i> Basement Parking
+            Available.</p>
+        <div id="map"></div>
+    </section>
+
+    <footer>
+        &copy; 2026 The Coffee Crate Roastery. All Rights Reserved.
+    </footer>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        // SweetAlert Function
+        function orderAlert(item) {
+            Swal.fire({
+                title: 'Excellent Choice!',
+                text: item + ' has been added to your order list.',
+                icon: 'success',
+                confirmButtonColor: '#d4af37',
+                background: '#1e1e1e',
+                color: '#fff'
+            });
+        }
+
+        // Dynamic JSON Blog (10 Blogs)
+        const journalData = [
+            { t: "Bean Selection", d: "How we choose our organic farms." },
+            { t: "The Perfect Grind", d: "Coarse vs Fine: What's better?" },
+            { t: "Roasting Levels", d: "Understanding Light, Medium, Dark." },
+            { t: "Latte Art Tips", d: "Pouring the perfect heart." },
+            { t: "Cold Brew Secret", d: "12 hours of patience for 1 cup." },
+            { t: "Morning Coffee", d: "Why it boosts your productivity." },
+            { t: "Fair Trade", d: "Supporting the hands that harvest." },
+            { t: "Sustainability", d: "Zero waste in our roastery." },
+            { t: "Caffeine Science", d: "How it affects your brain." },
+            { t: "Winter Blends", d: "Our seasonal special is here." }
+        ];
+
+        const container = document.getElementById('blog-container');
+        journalData.forEach(post => {
+            container.innerHTML += `<div class="blog-box"><h3>${post.t}</h3><p>${post.d}</p></div>`;
+        });
+
+        // Leaflet Map (Different Coordinates for variety)
+        var map = L.map('map').setView([34.0522, -118.2437], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+        L.marker([34.0522, -118.2437]).addTo(map).bindPopup('The Coffee Crate').openPopup();
+    </script>
+</body>
+
+</html>

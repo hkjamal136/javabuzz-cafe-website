@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /private/
+Sitemap: https://hkjamal136.github.io/the-coffee-crate/sitemap.xml
